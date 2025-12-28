@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+/* Base styles */
+body {
+  @apply font-sans w-[360px] min-h-[480px] bg-white text-slate-800 leading-relaxed;
+}
+
+#app {
+  @apply p-5 min-h-[480px] flex flex-col;
+}

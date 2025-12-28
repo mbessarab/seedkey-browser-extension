@@ -1,0 +1,118 @@
+{
+  "extensionName": {
+    "message": "SeedKey Auth",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "Passwordless authentication of the new generation. Your key is you.",
+    "description": "Extension description for store"
+  },
+  "welcomeDescription": {
+    "message": "Passwordless authentication of the new generation. Your key is you.",
+    "description": "Welcome screen description"
+  },
+  "createIdentity": {
+    "message": "Create Identity",
+    "description": "Button to create new identity"
+  },
+  "restore": {
+    "message": "Restore",
+    "description": "Button to restore from seed phrase"
+  },
+  "identityActive": {
+    "message": "Identity is active",
+    "description": "Status message on dashboard"
+  },
+  "settingsTitle": {
+    "message": "Settings",
+    "description": "Settings screen title"
+  },
+  "dangerZone": {
+    "message": "Danger Zone",
+    "description": "Danger zone section title"
+  },
+  "resetExtension": {
+    "message": "Reset Extension",
+    "description": "Button to reset extension"
+  },
+  "resetHint": {
+    "message": "All data will be deleted. Make sure you have your seed phrase.",
+    "description": "Reset warning hint"
+  },
+  "resetConfirm1": {
+    "message": "⚠️ Are you sure?\n\nAll data will be deleted. Make sure you have your seed phrase to restore access.",
+    "description": "First reset confirmation dialog"
+  },
+  "resetConfirm2": {
+    "message": "Final warning!\n\nWithout the seed phrase, you will lose access to all accounts forever.",
+    "description": "Second reset confirmation dialog"
+  },
+  "seedPhraseTitle": {
+    "message": "🌱 Your Seed Phrase",
+    "description": "Seed phrase display screen title"
+  },
+  "seedWarning": {
+    "message": "⚠️ Write down these words! They are the only way to restore access.",
+    "description": "Seed phrase warning"
+  },
+  "seedConfirmCheckbox": {
+    "message": "I have written down the seed phrase in a safe place",
+    "description": "Seed phrase confirmation checkbox"
+  },
+  "continue": {
+    "message": "Continue",
+    "description": "Continue button"
+  },
+  "restoreTitle": {
+    "message": "Restore",
+    "description": "Restore screen title"
+  },
+  "restoreDescription": {
+    "message": "Enter your seed phrase (12 or 24 words)",
+    "description": "Restore screen description"
+  },
+  "invalidSeedPhrase": {
+    "message": "Invalid seed phrase",
+    "description": "Error message for invalid seed phrase"
+  },
+  "restoreButton": {
+    "message": "Restore",
+    "description": "Restore button"
+  },
+  "seedInputPlaceholder": {
+    "message": "word1 word2 word3 ...",
+    "description": "Seed input placeholder"
+  },
+  "contactInfo": {
+    "message": "Contact Us",
+    "description": "Contact information section title"
+  },
+  "version": {
+    "message": "Version",
+    "description": "Version label"
+  },
+  "seedCopied": {
+    "message": "Seed phrase copied!",
+    "description": "Notification for seed phrase copied"
+  },
+  "clickToCopy": {
+    "message": "Click on a word to copy the entire phrase",
+    "description": "Copy hint"
+  },
+  "showSeedPhrase": {
+    "message": "Show Seed Phrase",
+    "description": "Button to show seed phrase"
+  },
+  "seedPhraseAvailable": {
+    "message": "You can view the seed phrase within 5 minutes of creation",
+    "description": "Seed phrase availability notification"
+  },
+  "seedPhraseExpired": {
+    "message": "Seed phrase display time has expired",
+    "description": "Time expired notification"
+  },
+  "timeRemaining": {
+    "message": "Time remaining",
+    "description": "Time remaining label"
+  }
+}

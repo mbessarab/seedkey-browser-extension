@@ -1,0 +1,63 @@
+{
+  "name": "seedkey-auth-extension",
+  "version": "0.0.1",
+  "description": "SeedKey Auth - Passwordless authentication via a browser extension",
+  "type": "module",
+  "scripts": {
+    "dev": "wxt",
+    "dev:firefox": "wxt --browser firefox",
+    "dev:edge": "wxt --browser edge",
+    "build": "wxt build",
+    "build:firefox": "wxt build --browser firefox",
+    "build:edge": "wxt build --browser edge",
+    "build:all": "npm run build && npm run build:firefox && npm run build:edge",
+    "zip": "wxt zip || powershell -Command \"Compress-Archive -Path '.output/chrome-mv3/*' -DestinationPath '.output/seedkey-auth-chrome-0.0.1.zip' -Force\"",
+    "zip:firefox": "wxt zip --browser firefox || powershell -Command \"Compress-Archive -Path '.output/firefox-mv2/*' -DestinationPath '.output/seedkey-auth-firefox-0.0.1.zip' -Force\"",
+    "zip:edge": "wxt zip --browser edge || powershell -Command \"Compress-Archive -Path '.output/edge-mv3/*' -DestinationPath '.output/seedkey-auth-edge-0.0.1.zip' -Force\"",
+    "zip:all": "npm run build:all && npm run zip && npm run zip:firefox && npm run zip:edge",
+    "release": "npm run generate:icons && npm run build:all && npm run zip:all",
+    "generate:icons": "node scripts/generate-icons.js",
+    "postinstall": "wxt prepare",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --ext .ts,.tsx",
+    "clean": "rimraf dist .output .wxt",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui"
+  },
+  "dependencies": {
+    "@noble/ed25519": "^2.2.3",
+    "@scure/bip39": "^1.5.0",
+    "@webext-core/messaging": "^1.4.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@types/chrome": "^0.0.279",
+    "@types/node": "^22.10.1",
+    "@types/react": "^19.0.1",
+    "@types/react-dom": "^19.0.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/coverage-v8": "^2.1.8",
+    "@vitest/ui": "^2.1.8",
+    "autoprefixer": "^10.4.22",
+    "happy-dom": "^15.11.7",
+    "postcss": "^8.5.6",
+    "rimraf": "^6.0.1",
+    "sharp": "^0.33.5",
+    "tailwindcss": "^4.1.18",
+    "terser": "^5.36.0",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8",
+    "wxt": "^0.20.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": "mbessarab"
+}
