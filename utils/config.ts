@@ -4,7 +4,7 @@
  */
 
 /** Version */
-export const EXTENSION_VERSION = '0.0.3';
+export const EXTENSION_VERSION = '0.0.1';
 
 /** Name */
 export const EXTENSION_NAME = 'SeedKey Auth';

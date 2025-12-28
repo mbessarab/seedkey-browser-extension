@@ -20,25 +20,19 @@ export default defineConfig({
   manifest: {
     name: 'SeedKey Auth',
     description: 'Passwordless authentication. Your key is you.',
-    version: '0.0.3',
+    version: '0.0.1',
     default_locale: 'en',
 
     // Firefox specific settings
     "browser_specific_settings": {
       "gecko": {
-        "id": "@extension-without-data-collection",
+        "id": "maks@besssarab.ru",
         "data_collection_permissions": {
           "required": ["none"]
         }
       }
     },
-
-    "applications": {
-      "gecko": {
-          "id": "maks@besssarab.ru"
-      }
-    },
-
+    
     // Minimal permissions
     permissions: [
       'storage',

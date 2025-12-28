@@ -1,6 +1,6 @@
 {
   "name": "seedkey-auth-extension",
-  "version": "0.0.3",
+  "version": "0.0.1",
   "description": "SeedKey Auth - Passwordless authentication via a browser extension",
   "type": "module",
   "scripts": {
@@ -11,9 +11,9 @@
     "build:firefox": "wxt build --browser firefox",
     "build:edge": "wxt build --browser edge",
     "build:all": "npm run build && npm run build:firefox && npm run build:edge",
-    "zip": "wxt zip || powershell -Command \"Compress-Archive -Path '.output/chrome-mv3/*' -DestinationPath '.output/seedkey-auth-chrome-0.0.3.zip' -Force\"",
-    "zip:firefox": "wxt zip --browser firefox || powershell -Command \"Compress-Archive -Path '.output/firefox-mv2/*' -DestinationPath '.output/seedkey-auth-firefox-0.0.3.zip' -Force\"",
-    "zip:edge": "wxt zip --browser edge || powershell -Command \"Compress-Archive -Path '.output/edge-mv3/*' -DestinationPath '.output/seedkey-auth-edge-0.0.3.zip' -Force\"",
+    "zip": "wxt zip || powershell -Command \"Compress-Archive -Path '.output/chrome-mv3/*' -DestinationPath '.output/seedkey-auth-chrome-0.0.1.zip' -Force\"",
+    "zip:firefox": "wxt zip --browser firefox || powershell -Command \"Compress-Archive -Path '.output/firefox-mv2/*' -DestinationPath '.output/seedkey-auth-firefox-0.0.1.zip' -Force\"",
+    "zip:edge": "wxt zip --browser edge || powershell -Command \"Compress-Archive -Path '.output/edge-mv3/*' -DestinationPath '.output/seedkey-auth-edge-0.0.1.zip' -Force\"",
     "zip:all": "npm run build:all && npm run zip && npm run zip:firefox && npm run zip:edge",
     "postinstall": "wxt prepare",
     "typecheck": "tsc --noEmit",
