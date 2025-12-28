@@ -7,7 +7,7 @@
  * - Loading and error state
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'preact/hooks';
 import { sendMessage } from '@/utils/messaging';
 import type { ExtensionState, SeedKeyError } from '@/utils/types';
 import { createLogger } from '@/utils/logger';

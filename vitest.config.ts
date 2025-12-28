@@ -1,7 +1,9 @@
 import { defineConfig } from 'vitest/config';
 import path from 'path';
+import preact from '@preact/preset-vite';
 
 export default defineConfig({
+  plugins: [preact()],
   test: {
     globals: true,
     environment: 'happy-dom',
@@ -17,6 +19,10 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, '.'),
+      'react': 'preact/compat',
+      'react-dom': 'preact/compat',
+      'react-dom/test-utils': 'preact/test-utils',
+      'react/jsx-runtime': 'preact/jsx-runtime',
     },
   },
 });

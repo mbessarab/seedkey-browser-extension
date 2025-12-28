@@ -5,7 +5,7 @@
  * that the user has saved it before continuing.
  */
 
-import { useState } from 'react';
+import { useState } from 'preact/hooks';
 import { Header, Button, SeedGrid } from '../components';
 import { useI18n } from '../hooks';
 
@@ -27,17 +27,17 @@ export function SeedDisplay({ seedPhrase, onConfirm, isLoading }: SeedDisplayPro
     <div className="flex-1 flex flex-col">
       <Header title={t('seedPhraseTitle')} />
       
-      <div className="bg-amber-50 text-amber-800 py-3 px-4 rounded-lg mb-5 text-sm">
+      <div className="bg-warning-bg text-warning-text py-3 px-4 rounded-lg mb-5 text-sm border border-warning/30">
         {t('seedWarning')}
       </div>
       
       <SeedGrid seedPhrase={seedPhrase} />
       
       <div className="mb-5">
-        <label className="flex items-center gap-2 cursor-pointer text-sm">
+        <label className="flex items-center gap-2 cursor-pointer text-sm text-text">
           <input
             type="checkbox"
-            className="w-[18px] h-[18px] accent-indigo-500"
+            className="w-[18px] h-[18px] accent-primary rounded"
             checked={confirmed}
             onChange={(e) => setConfirmed(e.target.checked)}
           />

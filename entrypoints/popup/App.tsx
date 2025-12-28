@@ -12,7 +12,7 @@
  * - useNavigation — navigation between screens
  */
 
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'preact/hooks';
 import { useExtensionState, useNavigation } from './hooks';
 import { Spinner } from './components';
 import { Welcome, SeedDisplay, Restore, Dashboard, Settings } from './views';

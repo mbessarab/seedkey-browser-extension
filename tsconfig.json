@@ -8,6 +8,7 @@
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
 
     "jsx": "react-jsx",
+    "jsxImportSource": "preact",
 
     "strict": true,
     "noUncheckedIndexedAccess": true,
@@ -20,7 +21,9 @@
 
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "react": ["./node_modules/preact/compat/"],
+      "react-dom": ["./node_modules/preact/compat/"]
     },
 
     "noEmit": true,

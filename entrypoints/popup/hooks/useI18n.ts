@@ -9,7 +9,7 @@
  * return <p>{t('welcomeDescription')}</p>;
  */
 
-import { useCallback } from 'react';
+import { useCallback } from 'preact/hooks';
 
 /**
  * Get a translation via the browser.i18n API.

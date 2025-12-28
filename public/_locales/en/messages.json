@@ -68,7 +68,7 @@
     "description": "Restore screen title"
   },
   "restoreDescription": {
-    "message": "Enter your seed phrase (12 or 24 words)",
+    "message": "Enter your seed phrase (12 words)",
     "description": "Restore screen description"
   },
   "invalidSeedPhrase": {

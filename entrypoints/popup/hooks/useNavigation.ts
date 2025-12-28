@@ -4,7 +4,7 @@
  * Implements a simple history stack for navigation between screens.
  */
 
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo } from 'preact/hooks';
 
 /** Identifiers of available screens */
 export type ViewId = 

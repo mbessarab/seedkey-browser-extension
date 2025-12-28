@@ -5,7 +5,7 @@
  * Supports a back button, logo, and extra elements on the right.
  */
 
-import type { ReactNode } from 'react';
+import type { ComponentChildren } from 'preact';
 import { Button } from '../ui/Button';
 
 /** Props for the Header component */
@@ -13,7 +13,7 @@ interface HeaderProps {
   title: string;
   showBack?: boolean;
   onBack?: () => void;
-  rightElement?: ReactNode;
+  rightElement?: ComponentChildren;
   logo?: boolean;
   smallLogo?: boolean;
 }
@@ -36,12 +36,24 @@ export function Header({
           ←
         </Button>
       )}
-      {logo && <div className="text-5xl mb-2">🔐</div>}
-      {smallLogo && <div className="text-2xl">🔐</div>}
+      {logo && (
+        <img 
+          src="/icon/icon-300x300.png" 
+          alt="SeedKey Logo" 
+          className="w-25 h-25 drop-shadow-[0_0_25px_rgba(34,211,187,0.4)] animate-fade-in"
+        />
+      )}
+      {smallLogo && (
+        <img 
+          src="/icon/icon-300x300.png" 
+          alt="SeedKey Logo" 
+          className="w-9 h-9 drop-shadow-[0_0_10px_rgba(34,211,187,0.3)]"
+        />
+      )}
       {logo ? (
-        <h1 className="text-xl font-semibold flex-1">{title}</h1>
+        <h1 className="text-2xl font-bold flex-1 bg-gradient-to-r from-primary to-text-accent bg-clip-text">{title}</h1>
       ) : (
-        <h2 className="text-lg font-semibold flex-1">{title}</h2>
+        <h2 className="text-lg font-semibold flex-1 text-text">{title}</h2>
       )}
       {rightElement}
     </div>

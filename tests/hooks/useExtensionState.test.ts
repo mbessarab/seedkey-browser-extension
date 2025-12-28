@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderHook, act, waitFor } from '@testing-library/react';
+import { renderHook, act, waitFor } from '@testing-library/preact';
 import { useExtensionState } from '@/entrypoints/popup/hooks/useExtensionState';
 import type { ExtensionState, SeedKeyError } from '@/utils/types';
 

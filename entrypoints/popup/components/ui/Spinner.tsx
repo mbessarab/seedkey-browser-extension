@@ -14,9 +14,16 @@ interface SpinnerProps {
  */
 export function Spinner({ text = 'Loading...' }: SpinnerProps) {
   return (
-    <div className="flex-1 flex flex-col justify-center items-center text-center">
-      <div className="w-10 h-10 border-[3px] border-slate-200 border-t-indigo-500 rounded-full animate-spin mx-auto mb-4" />
-      <p className="text-slate-500">{text}</p>
+    <div className="flex-1 flex flex-col justify-center items-center text-center animate-fade-in">
+      <div className="relative mb-6">
+        <img 
+          src="/icon/icon-300x300.png" 
+          alt="SeedKey Logo" 
+          className="w-20 h-20 drop-shadow-[0_0_30px_rgba(34,211,187,0.5)] animate-pulse"
+        />
+        <div className="absolute inset-0 w-20 h-20 border-[3px] border-transparent border-t-primary rounded-full animate-spin" />
+      </div>
+      <p className="text-text-muted text-sm tracking-wide">{text}</p>
     </div>
   );
 }

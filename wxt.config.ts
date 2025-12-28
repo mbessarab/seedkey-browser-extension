@@ -1,7 +1,7 @@
 import { defineConfig } from 'wxt';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
-import react from '@vitejs/plugin-react';
+import preact from '@preact/preset-vite';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -20,8 +20,24 @@ export default defineConfig({
   manifest: {
     name: 'SeedKey Auth',
     description: 'Passwordless authentication. Your key is you.',
-    version: '0.0.1',
+    version: '0.0.3',
     default_locale: 'en',
+
+    // Firefox specific settings
+    "browser_specific_settings": {
+      "gecko": {
+        "id": "@extension-without-data-collection",
+        "data_collection_permissions": {
+          "required": ["none"]
+        }
+      }
+    },
+
+    "applications": {
+      "gecko": {
+          "id": "maks@besssarab.ru"
+      }
+    },
 
     // Minimal permissions
     permissions: [
@@ -31,10 +47,10 @@ export default defineConfig({
     // Icons
     // SVG / PNG
     icons: {
-      16: '/icon/icon.svg',
-      32: '/icon/icon.svg',
-      48: '/icon/icon.svg',
-      128: '/icon/icon.svg',
+      16: '/icon/icon-16x16.png',
+      32: '/icon/icon-32x32.png',
+      48: '/icon/icon-48x48.png',
+      128: '/icon/icon-128x128.png',
     },
 
     // Action (popup)
@@ -42,9 +58,9 @@ export default defineConfig({
       default_popup: 'popup/index.html',
       default_title: 'SeedKey Auth',
       default_icon: {
-        16: '/icon/icon.svg',
-        32: '/icon/icon.svg',
-        48: '/icon/icon.svg',
+        16: '/icon/icon-16x16.png',
+        32: '/icon/icon-32x32.png',
+        48: '/icon/icon-48x48.png',
       },
     },
 
@@ -55,12 +71,17 @@ export default defineConfig({
 
   },
 
-  // Vite config with React
+  // Vite config with Preact
   vite: () => ({
-    plugins: [react()],
+    plugins: [preact()],
     resolve: {
       alias: {
         '@': resolve(__dirname),
+        // React compatibility aliases
+        'react': 'preact/compat',
+        'react-dom': 'preact/compat',
+        'react-dom/test-utils': 'preact/test-utils',
+        'react/jsx-runtime': 'preact/jsx-runtime',
       },
     },
     build: {

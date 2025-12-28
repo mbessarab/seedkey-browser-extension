@@ -25,7 +25,7 @@ export function Welcome({ onCreateIdentity, onRestore, isLoading }: WelcomeProps
     <div className="flex-1 flex flex-col text-center justify-center">
       <Header logo title="SeedKey Auth" />
       
-      <p className="text-slate-500 mb-6 text-center">
+      <p className="text-text-muted mb-6 text-center text-sm">
         {t('welcomeDescription')}
       </p>
       

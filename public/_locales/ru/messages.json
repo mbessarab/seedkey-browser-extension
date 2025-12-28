@@ -68,7 +68,7 @@
     "description": "Заголовок экрана восстановления"
   },
   "restoreDescription": {
-    "message": "Введите вашу seed-фразу (12 или 24 слова)",
+    "message": "Введите вашу seed-фразу (12 слов)",
     "description": "Описание на экране восстановления"
   },
   "invalidSeedPhrase": {

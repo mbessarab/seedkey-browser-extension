@@ -5,7 +5,7 @@
  * Displays a notice that the seed phrase is available for 5 minutes after creation.
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'preact/hooks';
 import { Header, Button } from '../components';
 import { useI18n } from '../hooks';
 import { sendMessage } from '@/utils/messaging';
@@ -99,23 +99,21 @@ export function Dashboard({ onSettings, createdAt, seedPhraseAvailable }: Dashbo
         }
       />
 
-      <div className="flex items-center gap-4 bg-slate-50 border border-slate-200 rounded-xl p-4 mb-6">
-        <div className="text-3xl">✅</div>
+      <div className="flex items-center gap-4 bg-success-bg border border-success/30 rounded-xl p-4 mb-6 animate-fade-in shadow-card">
+        <div className="w-12 h-12 rounded-full bg-success/20 flex items-center justify-center text-2xl">✅</div>
         <div className="flex flex-col">
-          <strong className="text-base">{t('identityActive')}</strong>
+          <strong className="text-base text-success">{t('identityActive')}</strong>
+          <span className="text-xs text-text-muted mt-0.5">SeedKey Protection Active</span>
         </div>
       </div>
 
       {/* Seed phrase availability notice */}
       {canShowSeed && (
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4">
-          <p className="text-amber-800 text-sm mb-3">
+        <div className="bg-warning-bg border border-warning/30 rounded-xl p-4 mb-4">
+          <p className="text-warning-text text-sm mb-3">
             ⏱️ {t('seedPhraseAvailable')}
           </p>
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-amber-600">
-              {t('timeRemaining')}: <strong>{formatTime(timeRemaining)}</strong>
-            </span>
+          <div className="flex items-center justify-between flex-col gap-2">
             <Button
               variant="secondary"
               onClick={handleShowSeed}
@@ -124,17 +122,20 @@ export function Dashboard({ onSettings, createdAt, seedPhraseAvailable }: Dashbo
             >
               {t('showSeedPhrase')}
             </Button>
+            <span className="text-xs text-warning">
+              {t('timeRemaining')}: <strong>{formatTime(timeRemaining)}</strong>
+            </span>
           </div>
         </div>
       )}
 
       {/* Seed phrase modal */}
       {showSeedModal && seedPhrase && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl p-5 max-w-sm w-full shadow-xl">
-            <h3 className="text-lg font-semibold mb-4">{t('seedPhraseTitle')}</h3>
+        <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4">
+          <div className="bg-background-elevated rounded-xl p-5 max-w-sm w-full shadow-xl border border-border">
+            <h3 className="text-lg font-semibold mb-4 text-text">{t('seedPhraseTitle')}</h3>
             
-            <div className="bg-amber-50 text-amber-800 py-2 px-3 rounded-lg mb-4 text-xs">
+            <div className="bg-warning-bg text-warning-text py-2 px-3 rounded-lg mb-4 text-xs border border-warning/30">
               {t('seedWarning')}
             </div>
 
@@ -146,15 +147,15 @@ export function Dashboard({ onSettings, createdAt, seedPhraseAvailable }: Dashbo
               {seedPhrase.split(' ').map((word, index) => (
                 <div
                   key={index}
-                  className="bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs text-center font-mono hover:bg-slate-100 transition-colors"
+                  className="bg-background-card border border-border rounded-lg p-2 text-xs text-center font-mono text-text hover:bg-background-elevated hover:border-primary/50 hover:shadow-glow-sm transition-all duration-200"
                 >
-                  <span className="text-slate-400 text-[10px] block">{index + 1}</span>
+                  <span className="text-primary/60 text-[10px] font-sans font-medium block">{index + 1}</span>
                   {word}
                 </div>
               ))}
             </div>
 
-            <p className="text-xs text-slate-400 text-center mb-4">
+            <p className="text-xs text-text-muted text-center mb-4">
               {t('clickToCopy')}
             </p>
 

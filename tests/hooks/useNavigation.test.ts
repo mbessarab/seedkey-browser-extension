@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
+import { renderHook, act } from '@testing-library/preact';
 import { useNavigation, type ViewId } from '@/entrypoints/popup/hooks/useNavigation';
 
 describe('useNavigation', () => {

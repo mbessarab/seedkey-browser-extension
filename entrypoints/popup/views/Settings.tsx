@@ -5,7 +5,7 @@
  * Requires double confirmation before resetting.
  */
 
-import { useCallback } from 'react';
+import { useCallback } from 'preact/hooks';
 import { Header, Button } from '../components';
 import { useI18n } from '../hooks';
 import { CONTACT, EXTENSION_VERSION } from '@/utils/config';
@@ -45,35 +45,35 @@ export function Settings({ onBack, onReset, isLoading }: SettingsProps) {
 
       {/* Contact information */}
       <div className="mb-5">
-        <h3 className="text-sm font-semibold text-slate-700 mb-3">📬 {t('contactInfo')}</h3>
+        <h3 className="text-sm font-semibold text-text mb-3">📬 {t('contactInfo')}</h3>
         <div className="space-y-2 text-sm">
           <div className="flex items-center gap-2">
-            <span className="text-slate-500">Email:</span>
+            <span className="text-text-muted">Email:</span>
             <a 
               href={`mailto:${CONTACT.email}`}
-              className="text-indigo-600 hover:text-indigo-800 hover:underline"
+              className="text-primary hover:text-primary-hover hover:underline transition-colors"
             >
               {CONTACT.email}
             </a>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-slate-500">Telegram:</span>
+            <span className="text-text-muted">Telegram:</span>
             <a 
               href={`https://t.me/${CONTACT.telegram.replace('@', '')}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-indigo-600 hover:text-indigo-800 hover:underline"
+              className="text-primary hover:text-primary-hover hover:underline transition-colors"
             >
               {CONTACT.telegram}
             </a>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-slate-500">GitHub:</span>
+            <span className="text-text-muted">GitHub:</span>
             <a 
               href={CONTACT.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-indigo-600 hover:text-indigo-800 hover:underline"
+              className="text-primary hover:text-primary-hover hover:underline transition-colors"
             >
               {CONTACT.github.replace('https://github.com/', '')}
             </a>
@@ -82,21 +82,21 @@ export function Settings({ onBack, onReset, isLoading }: SettingsProps) {
       </div>
 
       {/* Version */}
-      <div className="mb-5 text-xs text-slate-400">
+      <div className="mb-5 text-xs text-text-muted">
         {t('version')}: {EXTENSION_VERSION}
       </div>
 
-      <div className="mt-auto pt-5 border-t border-slate-200">
-        <h3 className="text-sm font-semibold text-red-500 mb-3">⚠️ {t('dangerZone')}</h3>
+      <div className="mt-auto pt-5">
+        {/*<h3 className="text-sm font-semibold text-danger mb-3 text-center"> {t('dangerZone')}</h3>*/}
         <Button
           variant="danger"
           onClick={handleReset}
           disabled={isLoading}
           isLoading={isLoading}
         >
-          {t('resetExtension')}
+            <p>⚠️ {t('resetExtension')}</p>
         </Button>
-        <p className="text-slate-500 text-xs mt-2">
+        <p className="text-text-muted text-xs mt-2">
           {t('resetHint')}
         </p>
       </div>

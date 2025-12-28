@@ -2,15 +2,14 @@
  * Entry point for the Popup app
  */
 
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
+import { render } from 'preact';
 import { App } from './App';
 import { createLogger } from '@/utils/logger';
 import './style.css';
 
 const log = createLogger('Popup');
 
-// Initialize the React app
+// Initialize the Preact app
 const container = document.getElementById('app');
 
 if (!container) {
@@ -19,8 +18,4 @@ if (!container) {
 
 log.info('Popup initialized');
 
-createRoot(container).render(
-  <StrictMode>
-    <App />
-  </StrictMode>
-);
+render(<App />, container);

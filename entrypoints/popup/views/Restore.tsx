@@ -3,7 +3,7 @@
  *
  */
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from 'preact/hooks';
 import { Header, Button } from '../components';
 import { useI18n } from '../hooks';
 
@@ -41,15 +41,16 @@ export function Restore({ onBack, onRestore, isLoading, error }: RestoreProps) {
   return (
     <div className="flex-1 flex flex-col">
       <Header
+        smallLogo
         title={t('restoreTitle')}
         showBack
         onBack={onBack}
       />
       
-      <p className="text-slate-500 mb-6 text-center">{t('restoreDescription')}</p>
+      <p className="text-text-muted mb-6 text-center text-sm">{t('restoreDescription')}</p>
       
       <textarea
-        className="w-full py-3 px-4 border border-slate-200 rounded-lg text-[15px] font-mono resize-none mb-3 focus:outline-none focus:border-indigo-500 focus:ring-[3px] focus:ring-indigo-100"
+        className="w-full py-3.5 px-4 bg-background-card border border-border rounded-lg text-[15px] font-mono text-text resize-none mb-3 placeholder:text-text-muted/60 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
         placeholder={t('seedInputPlaceholder')}
         rows={4}
         value={seedPhrase}
@@ -60,7 +61,7 @@ export function Restore({ onBack, onRestore, isLoading, error }: RestoreProps) {
       />
       
       {displayError && (
-        <div className="bg-red-50 text-red-500 py-3 px-4 rounded-lg mb-3 text-sm">{displayError}</div>
+        <div className="bg-danger-bg text-danger py-3 px-4 rounded-lg mb-3 text-sm border border-danger/30">{displayError}</div>
       )}
       
       <Button
