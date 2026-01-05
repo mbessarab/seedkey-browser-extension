@@ -20,7 +20,7 @@ export default defineConfig({
   manifest: {
     name: 'SeedKey Auth',
     description: 'Passwordless authentication. Your key is you.',
-    version: '0.0.1',
+    version: '0.0.2',
     default_locale: 'en',
 
     // Firefox specific settings
@@ -32,7 +32,7 @@ export default defineConfig({
         }
       }
     },
-    
+
     // Minimal permissions
     permissions: [
       'storage',

@@ -1,17 +1,19 @@
 /**
- * Content Script
- * 
+ * Content Script (ISOLATED WORLD)
+ *
  * This script acts as a bridge between the page and the background script.
- * 
+ *
  * COMMUNICATION:
- * - Uses CustomEvent instead of postMessage for reliable communication
- *   between the main world (page) and the isolated world (content script)
- *   (postMessage can be unreliable)
+ * - In Chrome: Can receive CustomEvent directly from main world
+ * - In Firefox: Uses inline script injection to bridge main world isolation
+ *
+ * Firefox isolates content scripts from page context, making CustomEvent.detail
+ * inaccessible. We solve this by injecting a bridge script into the main world.
  */
 
 import { sendMessage } from '@/utils/messaging';
 import { ChallengeSchema, ErrorCodes, SeedKeyError } from '@/utils/types';
-import type { SeedKeyRequest, SeedKeyResponse, Challenge } from '@/utils/types';
+import type { SeedKeyRequest, SeedKeyResponse } from '@/utils/types';
 import { createLogger } from '@/utils/logger';
 import { EXTENSION_VERSION } from '@/utils/config';
 
@@ -21,30 +23,171 @@ const log = createLogger('CS');
 const REQUEST_EVENT_V1 = 'seedkey:v1:request';
 const RESPONSE_EVENT_V1 = 'seedkey:v1:response';
 
+// postMessage types for bridge communication (Firefox only)
+const BRIDGE_REQUEST = 'SEEDKEY_BRIDGE_REQUEST';
+const BRIDGE_RESPONSE = 'SEEDKEY_BRIDGE_RESPONSE';
+
+// Detect Firefox
+const isFirefox = typeof navigator !== 'undefined' && navigator.userAgent.includes('Firefox');
+
+// ============================================================================
+// Firefox Bridge Script (injected into main world)
+// ============================================================================
+
+/**
+ * Bridge script code that runs in main world.
+ * Listens for SDK CustomEvents and forwards them via postMessage.
+ */
+const BRIDGE_SCRIPT_CODE = `
+(function() {
+  const REQUEST_EVENT = 'seedkey:v1:request';
+  const RESPONSE_EVENT = 'seedkey:v1:response';
+  const BRIDGE_REQUEST = 'SEEDKEY_BRIDGE_REQUEST';
+  const BRIDGE_RESPONSE = 'SEEDKEY_BRIDGE_RESPONSE';
+
+  // Listen for SDK requests (CustomEvent in main world)
+  document.addEventListener(REQUEST_EVENT, function(event) {
+    const detail = event.detail;
+    if (!detail || !detail.action) return;
+
+    // Forward to content script via postMessage
+    window.postMessage({
+      type: BRIDGE_REQUEST,
+      payload: JSON.parse(JSON.stringify(detail))
+    }, '*');
+  });
+
+  // Listen for responses from content script
+  window.addEventListener('message', function(event) {
+    if (event.source !== window) return;
+    if (!event.data || event.data.type !== BRIDGE_RESPONSE) return;
+
+    const response = event.data.response;
+    if (!response) return;
+
+    // Dispatch response back to SDK via CustomEvent
+    document.dispatchEvent(new CustomEvent(RESPONSE_EVENT, {
+      detail: response,
+      bubbles: true
+    }));
+  });
+})();
+`;
+
+/**
+ * Inject bridge script into the main world (for Firefox).
+ * This script runs in the page context and can access CustomEvent.detail.
+ */
+function injectBridgeScript(): void {
+    try {
+        const script = document.createElement('script');
+        script.textContent = BRIDGE_SCRIPT_CODE;
+        (document.head || document.documentElement).appendChild(script);
+        script.remove(); // Clean up after execution
+        log.debug('Bridge script injected into main world');
+    } catch (error) {
+        log.error('Failed to inject bridge script', error);
+    }
+}
+
 // ============================================================================
 // Content Script Definition
 // ============================================================================
 
+/**
+ * Safely extracts event detail from CustomEvent.
+ * Works in Chrome, may fail in Firefox (which uses bridge instead).
+ */
+function safeGetEventDetail(event: CustomEvent<SeedKeyRequest>): SeedKeyRequest | null {
+    try {
+        const detail = event.detail;
+        if (detail && typeof detail === 'object') {
+            return JSON.parse(JSON.stringify(detail));
+        }
+        return null;
+    } catch {
+        return null;
+    }
+}
+
+/**
+ * Send response back to the page.
+ * Uses postMessage for Firefox (via bridge), CustomEvent for Chrome.
+ */
+function sendResponseToPage(
+    requestId: string,
+    result: { success: boolean; result?: unknown; error?: SeedKeyError }
+): void {
+    const response: SeedKeyResponse = {
+        type: 'SEEDKEY_RESPONSE',
+        requestId,
+        success: result.success,
+        result: result.result,
+        error: result.error,
+    };
+
+    if (isFirefox) {
+        // Send via postMessage to bridge script in main world
+        window.postMessage({
+            type: BRIDGE_RESPONSE,
+            response,
+        }, '*');
+    } else {
+        // Chrome: dispatch CustomEvent directly
+        const event = new CustomEvent(RESPONSE_EVENT_V1, { detail: response, bubbles: true });
+        document.dispatchEvent(event);
+    }
+}
+
 export default defineContentScript({
-  matches: ['<all_urls>'],
-  runAt: 'document_start',
-  
-  main() {
-    log.info('Content script loaded', { url: window.location.href });
+    matches: ['<all_urls>'],
+    runAt: 'document_start',
 
-    document.addEventListener(REQUEST_EVENT_V1, ((event: CustomEvent<SeedKeyRequest>) => {
-      log.info('← Received SDK request', { 
-        action: event.detail?.action,
-        requestId: event.detail?.requestId,
-        origin: event.detail?.origin
-      });
-      handleRequest(event.detail);
-    }) as EventListener);
+    main() {
+        log.info('Content script loaded', { url: window.location.href, isFirefox });
 
-    // Dispatch a "content script ready" event
-    log.info('Content script ready, dispatching ready event');
-    document.dispatchEvent(new CustomEvent('seedkey:v1:cs-ready', { detail: { version: EXTENSION_VERSION } }));
-  },
+        if (isFirefox) {
+            // Firefox: Inject bridge script into main world
+            injectBridgeScript();
+
+            // Listen for postMessage from bridge script
+            window.addEventListener('message', (event) => {
+                if (event.source !== window) return;
+                if (event.data?.type !== BRIDGE_REQUEST) return;
+
+                const detail = event.data.payload as SeedKeyRequest;
+                if (!detail || !detail.action) return;
+
+                log.info('← Received SDK request via bridge', {
+                    action: detail.action,
+                    requestId: detail.requestId,
+                    origin: detail.origin
+                });
+                handleRequest(detail);
+            });
+        } else {
+            // Chrome: Listen for CustomEvent directly
+            document.addEventListener(REQUEST_EVENT_V1, ((event: CustomEvent<SeedKeyRequest>) => {
+                const detail = safeGetEventDetail(event);
+
+                if (!detail) {
+                    log.error('Failed to get event detail');
+                    return;
+                }
+
+                log.info('← Received SDK request', {
+                    action: detail.action,
+                    requestId: detail.requestId,
+                    origin: detail.origin
+                });
+                handleRequest(detail);
+            }) as EventListener);
+        }
+
+        // Dispatch a "content script ready" event
+        log.info('Content script ready, dispatching ready event');
+        document.dispatchEvent(new CustomEvent('seedkey:v1:cs-ready', { detail: { version: EXTENSION_VERSION } }));
+    },
 });
 
 // ============================================================================
@@ -53,64 +196,36 @@ export default defineContentScript({
 
 /**
  * Handles an incoming request from the SDK on the page.
- * 
+ *
  * @param request - SeedKeyRequest object with action and payload
- * 
+ *
  * @remarks
  * Processes the request and sends the response via CustomEvent.
  * On error, returns INTERNAL_ERROR.
  */
 function handleRequest(request: SeedKeyRequest): void {
-  if (!request || !request.action) {
-    return;
-  }
+    if (!request || !request.action) {
+        return;
+    }
 
-  const startTime = performance.now();
+    const startTime = performance.now();
 
-  processRequest(request)
-    .then((result) => {
-      const duration = (performance.now() - startTime).toFixed(2);
-      log.debug(`Response in ${duration}ms`, { action: request.action, success: result.success });
-      sendResponse(request.requestId, result);
-    })
-    .catch((error) => {
-      log.error('Request failed', error);
-      sendResponse(request.requestId, {
-        success: false,
-        error: {
-          code: ErrorCodes.INTERNAL_ERROR,
-          message: error instanceof Error ? error.message : 'Unknown error',
-        },
-      });
-    });
-}
-
-/**
- * Sends an SDK response via CustomEvent.
- * 
- * @param requestId - Unique request ID for correlation
- * @param result - Processing result with success, result, or error
- * 
- * @remarks
- * Uses CustomEvent for communication between the isolated world
- * (content script) and the main world (SDK on the page).
- * The event uses bubbles: true for reliable delivery.
- */
-function sendResponse(
-  requestId: string,
-  result: { success: boolean; result?: unknown; error?: SeedKeyError }
-): void {
-  const response: SeedKeyResponse = {
-    type: 'SEEDKEY_RESPONSE',
-    requestId,
-    success: result.success,
-    result: result.result,
-    error: result.error,
-  };
-
-  // Dispatch the response via CustomEvent
-  const event = new CustomEvent(RESPONSE_EVENT_V1, { detail: response, bubbles: true });
-  document.dispatchEvent(event);
+    processRequest(request)
+        .then((result) => {
+            const duration = (performance.now() - startTime).toFixed(2);
+            log.debug(`Response in ${duration}ms`, { action: request.action, success: result.success });
+            sendResponseToPage(request.requestId, result);
+        })
+        .catch((error) => {
+            log.error('Request failed', error);
+            sendResponseToPage(request.requestId, {
+                success: false,
+                error: {
+                    code: ErrorCodes.INTERNAL_ERROR,
+                    message: error instanceof Error ? error.message : 'Unknown error',
+                },
+            });
+        });
 }
 
 // ============================================================================
@@ -225,4 +340,5 @@ async function processRequest(
       };
   }
 }
+
 
