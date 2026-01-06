@@ -128,13 +128,14 @@ npm test
 
 ## 🔌 Интеграция для сайтов
 Рекомендуемый способ интеграции — использовать SDK клиента:  
-- seedkey-sdk-client — библиотека для работы с расширением и отправки запросов на backend.
+- [seedkey-client-sdk](https://github.com/mbessarab/seedkey-client-sdk) — библиотека для работы с расширением и отправки запросов на backend.
 
-Ознакомьтесь так же с другими репозиториями экосистемы:
-- seedkey-sdk-server — библиотека  для самостоятельной реализации сервиса.
-- seedkey-auth-service — self-hosted решение в виде готового сервиса.
-- seedkey-auth-service-migrations — миграции для seedkey-auth-service
-- seedkey-auth-service-helm-chart — Хельм Чарт для разворачивания seedkey-auth-service + seedkey-auth-service-migrations.
+### 🔧 Связные проекты
+Ознакомьтесь также с другими репозиториями экосистемы:
+- [seedkey-db-migrations](https://github.com/mbessarab/seedkey-db-migrations) — миграции для `seedkey-auth-service`.
+- [seedkey-auth-service](https://github.com/mbessarab/seedkey-auth-service) — self-hosted сервис аутентификации.
+- [seedkey-server-sdk](https://github.com/mbessarab/seedkey-server-sdk) — серверная библиотека для самостоятельной реализации сервиса.
+- [seedkey-auth-service-helm-chart](https://github.com/mbessarab/seedkey-auth-service-helm-chart) — Helm Chart для развёртывания `seedkey-auth-service` + миграций.
 
 ## 🕵️ Privacy
 См. `PRIVACY` .

@@ -128,13 +128,14 @@ In settings, **Reset Extension** removes the extension’s local data.
 
 ## 🔌 Website Integration
 The recommended integration approach is to use the client SDK:  
-- seedkey-sdk-client — a library for working with the extension and sending requests to the backend.
+- [seedkey-client-sdk](https://github.com/mbessarab/seedkey-client-sdk) — a library for working with the extension and sending requests to the backend.
 
-Also check out other ecosystem repositories:
-- seedkey-sdk-server — a library for implementing the service yourself.
-- seedkey-auth-service — a self-hosted, ready-to-use service.
-- seedkey-auth-service-migrations — migrations for seedkey-auth-service
-- seedkey-auth-service-helm-chart — a Helm chart for deploying seedkey-auth-service + seedkey-auth-service-migrations.
+### 🔧 Related Projects
+Also check out other repositories in the ecosystem:
+- [seedkey-db-migrations](https://github.com/mbessarab/seedkey-db-migrations) — migrations for `seedkey-auth-service`.
+- [seedkey-auth-service](https://github.com/mbessarab/seedkey-auth-service) — self-hosted authentication service.
+- [seedkey-server-sdk](https://github.com/mbessarab/seedkey-server-sdk) — server-side library for implementing the service yourself.
+- [seedkey-auth-service-helm-chart](https://github.com/mbessarab/seedkey-auth-service-helm-chart) — Helm chart for deploying `seedkey-auth-service` + migrations.
 
 ## 🕵️ Privacy
 See `PRIVACY`.
