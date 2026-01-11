@@ -1,5 +1,7 @@
 # 🔐 SeedKey Extension
 
+[<img src="https://blog.mozilla.org/addons/files/2020/04/get-the-addon-fx-apr-2020.svg" alt="for Firefox" height="60px">](https://addons.mozilla.org/ru/firefox/addon/seedkey/)
+
 ![license](https://img.shields.io/badge/license-MIT-blue)
 
 SeedKey Extension — мультибраузерное расширение для **беспарольной аутентификации**, которое является частью Open Source экосистемы SeedKey.  
